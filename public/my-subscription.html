@@ -13,7 +13,7 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-
+<link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
 <link rel="import" href="../bower_components/polymerfire/firebase-document.html">
@@ -47,14 +47,19 @@
   </template>
 
   <script>
-    Polymer({
-      is: 'my-subscription',
-      properties: {
-        token: {
-          type: String
-        }
-      },
-      toggleSubscription: function() {
+    class MyApp extends Polymer.Element {
+      static get is() { return 'my-app'; }
+
+    static get properties() {
+      return {
+        page: {
+          token: {
+            type: String
+          },
+        },
+      };
+    }
+      toggleSubscription () {
         var requestPermission = this.$.subscribe.checked;
         if (requestPermission) {
           this.$.messaging.requestPermission().then(() => {
@@ -62,6 +67,7 @@
           }, (err) => {
             console.log('user subscribe failed :(', err);
           });
+
         } else {
           console.log('user rejected permission');
         }
@@ -70,5 +76,7 @@
         console.log('message received', arguments);
       }
     });
+
+
   </script>
 </dom-module>

@@ -6,7 +6,9 @@
     "google-chart": "googlewebcomponents/google-chart#^1.1.2",
     "app-layout": "polymerelements/app-layout#^0.10.7",
     "paper-toggle-button": "2.0-preview",
-    "polymerfire": "2.0-preview"
+    "polymerfire": "2.0-preview",
+    "paper-icon-button": "2.0-preview",
+    "paper-input": "2.0-preview"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#2.0-preview",
