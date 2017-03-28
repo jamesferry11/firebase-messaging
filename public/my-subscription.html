@@ -1,0 +1,74 @@
+<!--
+ Copyright 2017 Google Inc.
+ 
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+ 
+      http://www.apache.org/licenses/LICENSE-2.0
+ 
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+-->
+
+<link rel="import" href="../bower_components/paper-toggle-button/paper-toggle-button.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-auth.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-document.html">
+<link rel="import" href="../bower_components/polymerfire/firebase-messaging.html">
+
+<dom-module id="my-subscription">
+  <template>
+    
+    <firebase-auth user="{{user}}"></firebase-auth>
+    
+    <firebase-messaging
+      id="messaging"
+      token="{{token}}"
+      on-message="handleMessage">
+    </firebase-messaging>
+
+    <firebase-document
+      path="/users/[[user.uid]]/token"
+      data="[[token]]">
+    </firebase-document>
+
+    <paper-toggle-button
+      id="subscribe"
+      on-tap="toggleSubscription"
+      checked="[[token]]">
+      Subscribe to notifications
+    </paper-toggle-button>
+    <p>Token:</p>
+    <p>[[token]]</p>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-subscription',
+      properties: {
+        token: {
+          type: String
+        }
+      },
+      toggleSubscription: function() {
+        var requestPermission = this.$.subscribe.checked;
+        if (requestPermission) {
+          this.$.messaging.requestPermission().then(() => {
+            console.log('user subscribed successfully!');
+          }, (err) => {
+            console.log('user subscribe failed :(', err);
+          });
+        } else {
+          console.log('user rejected permission');
+        }
+      },
+      handleMessage() {
+        console.log('message received', arguments);
+      }
+    });
+  </script>
+</dom-module>
